@@ -1,122 +1,167 @@
-def is_prime(n):
-    ok = 1
-    for x in range(2, n, 1):
-        if n % x == 0:
-            ok = 0
-    if ok == 1:
-        return 1
-    return 0
+def show_menu():
+    print("1. Citire numar.")
+    print("2. Citire an1.")
+    print("3. Citire an2.")
+    print("4. Găsește ultimul număr prim mai mic decât un număr dat, dar doar pentru n mai mare strict decat 2")
+    print("5. Determină dacă un număr dat este palindrom.")
+    print("6. Afișează toți anii bisecți între doi ani dați (inclusiv anii dați).")
+    print("7. Transformă un număr dat din baza 10 în baza 2. Numărul se dă în baza 10.")
+    print("x. Ieșire.")
 
 
-def size(n):
-    nr = 0
-    while n > 0:
-        nr = nr + 1
-        n = n // 10
-    return nr + 1
+def read_number():
+    n = int(input("Numarul dorit este: "))
+    return n
 
 
-def oglindit(n):
-    r = 0
-    while n > 0:
-        r = r * 10 + (n % 10)
-        n = n / 10
-    return r
+def read_an1():
+    an1 = int(input("Primul an este: "))
+    return an1
 
 
-def is_superprime(n):
-    """verifica daca sunt prime"""
-    p = 1
-    ok = 1
-    for x in range(1, size(n), 1):
-        if is_prime(n // p) == 0:
-            ok = 0
-        p = p * 10
-    if ok == 1:
-        return True
-    return False
+def read_an2():
+    an2 = int(input("Al doilea an este:"))
+    return an2
 
 
-def test_is_superprime():
-    """testeaza functia (verifica daca sunt prime)"""
-    assert is_superprime(2) is True
+"""
+-Găsește ultimul număr prim mai mic decât un număr dat, dar doar pentru n mai mare strict decat 2
+-Input:
+    n,ok numere naturale
+-Output:
+    cel mai mare numar prim strict mai mic decat n
+"""
 
-
-def isprime(n):
-    nr = 0
-    for x in range(2, n, 1):
-        if n % x == 0:
-            nr = nr + 1
-    if nr == 0:
-        return True
-    return False
 
 
 def get_largest_prime_below(n):
-    """returneaza ce mai mare numar prim mai mic decat n"""
-    for x in range(n - 1, 2, -1):
-        if isprime(x):
-            return x
-    return -1
+    ok = 1
+    while ok > 0:
+        n -= 1
+        nr = 0
+        for i in range(1, n + 1):
+            if n % i == 0:
+                nr += 1
+        if nr == 2:
+            ok = 0
+    return n
 
 
 def test_get_largest_prime_below():
-    """testeaza functia (get_largest_prime_below)"""
-    assert get_largest_prime_below(-1) == -1
-    assert get_largest_prime_below(2) == -1
+    assert get_largest_prime_below(10) == 7
+    assert get_largest_prime_below(105) == 103
+    assert get_largest_prime_below(3) == 2
 
 
-"""# LAB 2 - PROBLEMA 5"""
+"""
+-Determină dacă un număr dat este palindrom.
+-Input:
+    n numar natural
+-Output:
+    bool: True daca n este palindrom, respectiv False daca n nu este palindrom
+"""
 
 
 def is_palindrome(n):
-    """
-    verifica daca n este palindrom
-    copiem valoarea lui n
-    """
-    c = n
-    nr = 0
-    while n > 0:
-        nr = nr * 10 + (n % 10)
-        n = n // 10
-    if nr != c:
+    og = 0
+    a = n
+    while a != 0:
+        og = og * 10 + a % 10
+        a = a // 10
+    if og == n:
+        return True
+    else:
         return False
-    return True
 
 
 def test_is_palindrome():
-    """testeaza functia (is_Palindrome)"""
-    assert is_palindrome(12) == False
-    assert is_palindrome(11) == True
-    assert is_palindrome(1) == True
+    assert is_palindrome(101) == True
+    assert is_palindrome(100) == False
+    assert is_palindrome(19) == False
 
 
-def menu():
-    print("1.Citire date: ")
-    print("2.Determina proprietatea 1")
-    print("3.Determina proprietatea 2")
-    print("4.Determina proprietatea 3 ")
-    print("5.Iesire ")
+"""
+-Afișează toți anii bisecți între doi ani dați (inclusiv anii dați).
+-Input:
+    anii care reprezinta inceputul si sfarsitul intervalului, numere naturale intregi
+-Outpu:
+    anii bisecti returnati intr-o lista
+"""
+
+
+
+def get_leap_years(start: int, end: int):
+    lst = []
+    for i in range(start + 1, end):
+        if (i % 4 == 0 and i % 100 != 0) or i % 400 == 0:
+            lst.append(i)
+
+    return lst
+
+
+def test_get_leap_years():
+    assert get_leap_years(2002, 2016) == [2004, 2008, 2012]
+    assert get_leap_years(2000, 2004) == []
+    assert get_leap_years(2003, 2005) == [2004]
+
+
+"""
+-Transformă un număr dat din baza 10 în baza 2. Numărul se dă în baza 10.
+-Input:
+    n numar natural
+-Otput:
+    reprezentarea in baza 2 a numarului n
+"""
+
+
+def get_base_2(n: str):
+    lst = []
+    while n != 0:
+        a = n % 2
+        lst.append(a)
+        n = n // 2
+    lst.reverse()
+    return lst
+
+
+def test_get_base_2():
+    assert get_base_2(75) == [1, 0, 0, 1, 0, 1, 1]
+    assert get_base_2(123) == [1, 1, 1, 1, 0, 1, 1]
+    assert get_base_2(1) == [1]
+
+
+test_get_base_2()
+test_get_leap_years()
+test_is_palindrome()
+test_get_largest_prime_below()
 
 
 def main():
-    test_is_superprime()
-    test_is_palindrome()
-    test_get_largest_prime_below()
     while True:
-        menu()
-        optiune = input("Alege optiunea: ")
-
-        if optiune == 1:
-            n = int(input("Citeste n: "))
-        elif optiune == 2:
-            print(is_superprime)
-        elif optiune == 3:
-            print(get_largest_prime_below)
-        elif optiune == 4:
-            print(is_palindrome)
-        elif optiune == 5:
+        show_menu()
+        opt = input("Optiunea dorita este: ")
+        if opt == '1':
+            numar = read_number()
+        elif opt == '2':
+            primul_an = read_an1()
+        elif opt == '3':
+            al_doilea_an = read_an2()
+        elif opt == '4':
+            ultimul = get_largest_prime_below(numar)
+            print(ultimul)
+        elif opt == '5':
+            pal = is_palindrome(numar)
+            print(pal)
+        elif opt == '6':
+            lst = get_leap_years(primul_an, al_doilea_an)
+            print(lst)
+        elif opt == '7':
+            baza2 = get_base_2(numar)
+            print(baza2)
+        elif opt == 'x':
             break
+        else:
+            print("Optiune invalida.")
 
 
 if __name__ == '__main__':
